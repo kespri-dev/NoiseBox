@@ -11,11 +11,11 @@ import AVFoundation
 
 struct NoiseCellView: View {
     let noise: NoiseMedia
-    private let toto = Toto()
+    private let player = Mp3Player()
     
     var body: some View {
         Button(action: {
-            self.toto.play(soundName: self.noise.filename)
+            self.player.play(soundName: self.noise.filename)
         }) {
             Text(noise.title)
         }
@@ -29,11 +29,15 @@ struct NoiseCellView_Previews: PreviewProvider {
 }
 
 
-class Toto {
+class Mp3Player {
     private var player: AVPlayer!
+    private let typeOfFile = "mp3"
     
     func play(soundName: String) {
-        let path = Bundle.main.path(forResource: soundName, ofType:"mp3")!
+        guard let path = Bundle.main.path(forResource: soundName, ofType:typeOfFile) else {
+            return
+        }
+//        let path = Bundle.main.path(forResource: soundName, ofType:typeOfFile)!
         let url = URL(fileURLWithPath: path)
 
         player = AVPlayer(url: url)
